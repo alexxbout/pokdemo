@@ -1,0 +1,16 @@
+<p>search works!</p>
+
+<!-- <input [(ngModel)]="id" type="number" placeholder="Search pokemon by id"> -->
+<!-- <input type="number" value="{{id}}" readonly> -->
+
+<input type="text" [(ngModel)]="filter">
+<br>
+<select [(ngModel)]="selected" name="pokedex" id="pokedex">
+    <option value="-1" selected disabled>Please select a Pokémon</option>
+    <!-- <option *ngFor="let pokemon of pokemons" value="{{pokemon.id}}">{{ pokemon.name }}</option> -->
+    <option *ngFor="let pokemon of (pokemons | filterPokemonPipe:'name':filter)" value="{{pokemon.id}}">{{ pokemon.name }}</option>
+</select>
+<br>
+<!-- <p>selected: {{selected}}</p> -->
+
+<button (click)="validate()">Go !</button>
