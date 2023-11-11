@@ -1,4 +1,11 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { prominent } from 'color.js';
 import { PokeapiService } from '../pokeapi.service';
 
 @Component({
@@ -9,11 +16,22 @@ import { PokeapiService } from '../pokeapi.service';
 export class SearchComponent {
   // ? Différence entre [(ngModel)] et [ngModel] ?
 
+  @Output() selectedPokemonId: EventEmitter<number> =
+    new EventEmitter<number>();
+  @Output() viewDetailsClicked: EventEmitter<number> =
+    new EventEmitter<number>();
+
+  @ViewChild('pokepic') pokepic: ElementRef<HTMLImageElement>;
+
   pokemons: { id: number; name: string }[] = [];
 
   // id du pokémon sélectionné
   selected: number = -1;
   filter: string = '';
+
+  color: string = '';
+
+  loaded: boolean = false;
 
   constructor(public pokeapiService: PokeapiService) {}
 
@@ -24,19 +42,12 @@ export class SearchComponent {
     });
   }
 
-  // Méthode appelée lorsqu'on clique sur le bouton "Valider"
-  validate(): void {
-    if (this.selected === -1) {
-      alert('Veuillez sélectionner un pokémon');
-    } else {
-      console.log(
-        'Vous avez sélectionné: ' +
-          this.pokemons[this.getSelectedPokemonIndex()].name
-      );
-    }
+  viewDetails(): void {
+    // Emit the event when "Voir les détails" button is clicked
+    this.viewDetailsClicked.emit(this.selected);
   }
 
-  // Méthode pour obtenir l'index du pokémon sélectionné dans le tableau des pokémons
+  // Méthode pour obtenir l"index du pokémon sélectionné dans le tableau des pokémons
   getSelectedPokemonIndex(): number {
     return this.pokemons.findIndex((e) => {
       return e.id == this.selected;
@@ -44,7 +55,23 @@ export class SearchComponent {
   }
 
   randomPokemon(): void {
+    this.loaded = false;
+
     const randomIndex = Math.floor(Math.random() * this.pokemons.length);
     this.selected = this.pokemons[randomIndex].id;
+
+    setTimeout(() => {
+      if (this.pokepic) {
+        prominent(this.pokepic.nativeElement, {
+          format: 'hex',
+          group: 5,
+          amount: 2
+        }).then((color) => {
+          this.color = color[1] as string;
+
+          this.loaded = true;
+        }).catch((err) => {});
+      }
+    });
   }
 }

@@ -17,8 +17,13 @@
         </div>
     </div>
 
-    <img *ngIf="selected !== -1" class="w-64 h-64 pointer-events-none select-none drop-shadow-2xl touch-none saturate-150"
-        src="{{pokeapiService.getImage(selected)}}" alt="Photo du Pokémon">
+    <div *ngIf="selected !== -1">
+        <img #pokepic [ngStyle]="{filter: 'drop-shadow(0 0 75px ' + color + ')', display: loaded ? 'initial' : 'none'}" class="pointer-events-none select-none h-72 drop-shadow-2xl touch-none saturate-150 rounded-xl"
+            src="{{pokeapiService.getImage(selected)}}" alt="Photo du Pokémon"
+            onerror="this.src='../../assets/img/oui.gif'">
+    </div>
+
+    <div [ngStyle]="{backgroundColor: color}" class="w-10 h-10"></div>
 
     <div class="flex gap-x-5">
         <button (click)="randomPokemon()"
@@ -27,7 +32,7 @@
             <span>Aléatoire</span>
         </button>
 
-        <button
+        <button (click)="viewDetails()"
             class="flex items-center justify-center px-5 py-2 text-2xl duration-200 rounded-md disabled:grayscale bg-pokemon-yellow hover:bg-yellow-500 gap-x-3"
             [disabled]="selected === -1">
             <img class="w-5 h-5" src="../../assets/img/pokeball.svg" alt="">

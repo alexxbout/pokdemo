@@ -1,20 +1,19 @@
 export class Pokemon {
+    id: number = 0;
+    name: string = "";
+    base_experience: number = 0;
+    height: number = 0;
+    is_default: boolean = false;
+    order: number = 0;
+    weight: number = 0;
     abilities: any[] = [];
-    base_experience = 0;
     forms: any[] = [];
     game_indices: any[] = [];
-    height = 0;
     held_items: any[] = [];
-    id = 0;
-    is_default = false;
-    location_area_encounters = '';
+    location_area_encounters: string = "";
     moves: any[] = [];
-    name = '';
-    order = 0;
-    past_types: any[] = [];
+    sprites: any = {};
     species: any[] = [];
-    sprites: any[] = [];
     stats: any[] = [];
     types: any[] = [];
-    weight = 0;
 }
