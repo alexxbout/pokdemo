@@ -1,21 +1,58 @@
 <div class="relative flex flex-col items-center justify-center w-screen h-screen p-10 overflow-hidden">
-    <div class="absolute flex items-center w-full top-10 left-10 gap-x-2">
-        <img class="w-7" src="../../assets/img/pokeball.svg" alt="">
-        <span class="text-xl font-bold text-orange-950">Pokémon</span>
+    <div class="absolute flex items-center w-max top-10 left-10 gap-x-2">
+        <img class="w-10" src="../../assets/img/pokeball.svg" alt="">
+        <span class="text-2xl font-bold text-black">Pokémon</span>
     </div>
 
     <div class="relative flex items-center justify-between w-full gap-x-10">
-        <img (click)="switch('LEFT')" class="z-50" src="../../assets/img/chevron_left.svg" alt="">
+        <img (click)="switch('LEFT')" class="z-50 transition-transform duration-300 cursor-pointer hover:-translate-x-2"
+            src="../../assets/img/chevron_left.svg" alt="">
 
-        <span [ngStyle]="{color: color, textShadow: '0px 0px 100px ' + color}"
-            class="transition-all duration-1000 font-extrabold saturate-[4] text-[max(6vw,13vw)] whitespace-nowrap text-center max-w-full select-none">{{
-            name }}</span>
+        <!-- '-webkit-background-clip': 'text', backgroundImage: 'linear-gradient(90deg, ' + color + ', ' + color2 + ')' -->
+        <span [ngStyle]="{color: color}"
+            class="drop-shadow-2xl transition-colors duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
+            {{ name }}
+        </span>
 
-        <img (click)="switch('RIGHT')" class="z-50 rotate-180" src="../../assets/img/chevron_left.svg" alt="">
+        <img (click)="switch('RIGHT')"
+            class="z-50 transition-transform duration-300 rotate-180 cursor-pointer hover:translate-x-2"
+            src="../../assets/img/chevron_left.svg" alt="">
     </div>
 
-    <div #pokepic class="absolute left-2/4">
-        <img class="hover:opacity-20 hover:blur transition-opacity duration-300 select-none 2xl:h-[60vh] aspect-square drop-shadow-2xl touch-none saturate-200 rounded-xl"
-            src="{{pokeapiService.getImage(id)}}" alt="Photo du Pokémon" onerror="this.src='../../assets/img/oui.gif'">
+    <div #pokepic class="absolute">
+        <img class="transition-opacity duration-300 hover:opacity-20 hover:blur aspect-square drop-shadow-2xl saturate-200 rounded-xl"
+            src="{{pokeapiService.getImage(id)}}">
+    </div>
+
+    <div class="absolute flex bottom-10 gap-x-5">
+        <button (click)="randomPokemon()"
+            class="px-4 py-4 font-bold text-white duration-300 bg-black rounded-full h-max group hover:scale-105">
+            <img class="w-6 h-6 transition-transform duration-500 group-hover:rotate-180"
+                src="../../assets/img/random.svg" alt="">
+        </button>
+
+        <div class="flex items-center justify-center px-4 py-4 bg-black rounded-full h-max w-max gap-x-5">
+            <div class="flex items-center justify-center font-bold gap-x-2">
+                <label for="filter" class="text-white">Filtre</label>
+                <input [(ngModel)]="enableFilter" type="checkbox" name="enableFilter" id="enableFilter">
+                <input *ngIf="enableFilter" [(ngModel)]="filter" type="text" id="filter" name="filter"
+                    class="text-sm p-1 rounded-full w-[220px]">
+            </div>
+
+            <div class="flex items-center justify-center font-bold gap-x-2">
+                <!-- <label for="pokedex" class="text-white">Liste</label> -->
+
+                <select [(ngModel)]="id" (change)="selectPokemon(id)" name="pokedex" id="pokedex"
+                    class="text-sm p-1 rounded-full w-[220px]">
+                    <option [ngValue]="-1" selected disabled>Séléctionnez un Pokémon</option>
+                    <option *ngFor="let pokemon of (pokemons | filterPokemonPipe:'name':filter)" [ngValue]="pokemon.id">
+                        {{ pokemon.name }}</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="px-4 py-4 font-bold text-white duration-300 bg-black rounded-full hover:scale-105 h-max">
+            Voir les détails
+        </button>
     </div>
 </div>

@@ -12,10 +12,9 @@ import { Pokemon } from "./pokemon";
   providedIn: "root",
 })
 export class PokeapiService {
-  private allUrl = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+  private allUrl = "https://pokeapi.co/api/v2/pokemon-species?limit=100000&offset=0";
   private oneUrl = "https://pokeapi.co/api/v2/pokemon-species/";
-  private imageUrl =
-    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
+  private imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 
   constructor(private http: HttpClient) {}
 

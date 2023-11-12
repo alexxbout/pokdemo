@@ -5,7 +5,6 @@ import { PokeapiService } from "../pokeapi.service";
 @Component({
   selector: "app-info",
   templateUrl: "./info.component.html",
-  styleUrls: ["./info.component.css"],
 })
 export class InfoComponent {
   @Input() pokemonId: number = -1;

@@ -6,7 +6,6 @@ import { PokeapiService } from "../pokeapi.service";
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
-  styleUrls: ["./search.component.css"],
 })
 export class SearchComponent {
   // ? Différence entre [(ngModel)] et [ngModel] ?
@@ -25,7 +24,9 @@ export class SearchComponent {
 
   switching: boolean = false;
 
-  // filter: string = '';
+  filter: string = '';
+
+  enableFilter: boolean = false;
 
   color: string = "";
 
@@ -73,6 +74,9 @@ export class SearchComponent {
         gsap
           .to(this.pokepic.nativeElement, {
             translateX: translateValue,
+            duration: 0.8,
+            ease: "power4.inOut",
+            scale: 0
           })
           .then(() => {
             this.selectPokemon(this.pokemons[targetIndex].id);
@@ -85,6 +89,8 @@ export class SearchComponent {
                 },
                 {
                   translateX: "0%",
+                  ease: "power4.out",
+                  scale: 1,
                 }
               );
             }
@@ -105,34 +111,18 @@ export class SearchComponent {
 
       prominent(this.pokeapiService.getImage(this.id), {
         format: "hex",
-        group: 15,
+        group: 1,
         amount: 2,
       }).then((color) => {
         this.color = color[1] as string;
+      }).catch(() => {
+        this.color = "#000000";
       });
     });
   }
 
-  formatName(name: string): string {
-    return name.charAt(0).toUpperCase() + name.slice(1);
+  randomPokemon(): void {
+    const randomIndex = Math.floor(Math.random() * this.pokemons.length);
+    this.selectPokemon(this.pokemons[randomIndex].id);
   }
-
-  // randomPokemon(): void {
-  //   const randomIndex = Math.floor(Math.random() * this.pokemons.length);
-  //   this.selected = this.pokemons[randomIndex].id;
-
-  //   setTimeout(() => {
-  //     if (this.selected != -1) {
-  //       prominent(this.pokeapiService.getImage(this.selected), {
-  //         format: 'hex',
-  //         group: 5,
-  //         amount: 2,
-  //       })
-  //         .then((color) => {
-  //           this.color = color[1] as string;
-  //         })
-  //         .catch((err) => {});
-  //     }
-  //   });
-  // }
 }
