@@ -1,4 +1,10 @@
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { prominent } from "color.js";
 import gsap from "gsap";
 import { PokeapiService } from "../pokeapi.service";
@@ -9,22 +15,18 @@ import { PokeapiService } from "../pokeapi.service";
 })
 export class SearchComponent {
   // ? Différence entre [(ngModel)] et [ngModel] ?
-
-  // @Output() selectedPokemonId: EventEmitter<number> =
-  //   new EventEmitter<number>();
-  // @Output() viewDetailsClicked: EventEmitter<number> =
-  //   new EventEmitter<number>();
+  @Output() viewDetailsEvent: EventEmitter<number> = new EventEmitter<number>();
 
   @ViewChild("pokepic") pokepic: ElementRef<HTMLElement> | undefined;
 
   pokemons: { id: number; name: string }[] = [];
 
-  id: number = -1;
+  id: number = 1;
   name: string = "";
 
   switching: boolean = false;
 
-  filter: string = '';
+  filter: string = "";
 
   enableFilter: boolean = false;
 
@@ -44,17 +46,9 @@ export class SearchComponent {
     });
   }
 
-  // viewDetails(): void {
-  //   // Emit the event when "Voir les détails" button is clicked
-  //   this.viewDetailsClicked.emit(this.selected);
-  // }
-
-  // Méthode pour obtenir l"index du pokémon sélectionné dans le tableau des pokémons
-  // getSelectedPokemonIndex(): number {
-  //   return this.pokemons.findIndex((e) => {
-  //     return e.id == this.selected;
-  //   });
-  // }
+  viewDetails(): void {
+    this.viewDetailsEvent.emit(this.id);
+  }
 
   switch(side: "LEFT" | "RIGHT") {
     if (this.switching) {
@@ -76,7 +70,7 @@ export class SearchComponent {
             translateX: translateValue,
             duration: 0.8,
             ease: "power4.inOut",
-            scale: 0
+            scale: 0,
           })
           .then(() => {
             this.selectPokemon(this.pokemons[targetIndex].id);
@@ -111,13 +105,15 @@ export class SearchComponent {
 
       prominent(this.pokeapiService.getImage(this.id), {
         format: "hex",
-        group: 1,
+        group: 15,
         amount: 2,
-      }).then((color) => {
-        this.color = color[1] as string;
-      }).catch(() => {
-        this.color = "#000000";
-      });
+      })
+        .then((color) => {
+          this.color = color[1] as string;
+        })
+        .catch(() => {
+          this.color = "#000000";
+        });
     });
   }
 

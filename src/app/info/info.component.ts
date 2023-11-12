@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import gsap from "gsap";
 import { PokeapiService } from "../pokeapi.service";
 
@@ -7,60 +7,68 @@ import { PokeapiService } from "../pokeapi.service";
   templateUrl: "./info.component.html",
 })
 export class InfoComponent {
-  @Input() pokemonId: number = -1;
-  @Output() closePopup: EventEmitter<void> = new EventEmitter<void>();
+  @Input() id: number = -1;
   @ViewChild("blur") blur: ElementRef<HTMLElement>;
-
-  // pokemon: any;
+  @ViewChild("modal") modal: ElementRef<HTMLElement>;
 
   isBlur: boolean = false;
 
+  timeline: GSAPTimeline | undefined;
+
   constructor(public pokeapiService: PokeapiService) {}
 
-  setBlur(): void {
-    if (this.blur) {
-      this.blur.nativeElement.classList.remove("hidden");
+  ngAfterViewInit(): void {
+    this.timeline = gsap.timeline({
+      paused: true,
+      onComplete: () => {
+        if (!this.isBlur) {
+          this.isBlur = false;
+          this.blur.nativeElement.classList.add("hidden");
+        }
+      },
+    });
 
-      gsap.to(this.blur.nativeElement, {
-        duration: 0.5,
-        backdropFilter: "blur(20px) saturate(150%)",
-      });
+    this.timeline.to(this.blur.nativeElement, {
+      duration: 1,
+      ease: "power4.out",
+      backdropFilter: !this.isBlur ? "blur(10px)" : "blur(0px)",
+    });
 
-      this.isBlur = true;
-    }
+    this.timeline.fromTo(
+      this.modal.nativeElement,
+      {
+        y: "100%",
+        opacity: 1,
+        scale: 0.2,
+      },
+      {
+        y: "0%",
+        opacity: 1,
+        scale: 1,
+        ease: "power4.out",
+        duration: 0.8,
+      },
+      "<"
+    );
   }
 
-  removeBlur(): void {
-    if (this.blur) {
-      gsap
-        .to(this.blur.nativeElement, {
-          duration: 0.5,
-          backdropFilter: "blur(0px) saturate(100%)",
-        })
-        .then(() => {
+  toggle(): void {
+    console.log("Toggle");
+
+    if (this.blur && this.modal && this.timeline) {
+      if (!this.isBlur) {
+        this.isBlur = true;
+        this.blur.nativeElement.classList.remove("hidden");
+
+        this.timeline.timeScale(1);
+        this.timeline.play();
+      } else {
+        this.timeline.timeScale(2.5);
+        this.timeline.reverse().then(() => {
+          this.isBlur = false;
           this.blur.nativeElement.classList.add("hidden");
         });
-
-      this.isBlur = false;
+      }
     }
-  }
-
-  toggleBlur(): void {
-    if (this.isBlur) {
-      this.removeBlur();
-    } else {
-      this.setBlur();
-    }
-  }
-
-  // private loadPokemonDetails(id: number): void {
-  //   this.pokeapiService.getPokemon(id).subscribe((pokemon) => {
-  //     this.pokemon = pokemon;
-  //   });
-  // }
-
-  closeInfoPopup(): void {
-    // Emit the event to notify the parent component to close the popup
-    this.closePopup.emit();
   }
 }

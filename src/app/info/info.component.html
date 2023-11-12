@@ -1,15 +1,16 @@
-<div #blur class="absolute z-10 flex items-center justify-center hidden w-screen bg-white h-screw-screen bg-opacity-20">
-    <div class="z-20 grid w-2/3 grid-cols-3 p-5 bg-white shadow-2xl aspect-square rounded-2xl h-2/3">
-        <div></div>
+<div #blur class="absolute z-20 flex items-center justify-center hidden w-screen h-screen overflow-hidden bg-gray-500 bg-opacity-20">
+    <div #modal class="z-20 grid w-2/3 grid-cols-3 p-5 bg-white drop-shadow-2xl aspect-square rounded-2xl h-2/3">
+        <div (click)="toggle()" class="p-4">Fermer</div>
+        <!-- <div></div>
 
         <div class="flex items-center justify-center w-full h-full">
-            <img *ngIf="pokemonId !== -1"
+            <img *ngIf="id !== -1"
                 class="pointer-events-none select-none h-90 w-90 drop-shadow-2xl touch-none saturate-150 rounded-xl"
-                src="{{pokeapiService.getImage(pokemonId)}}" alt="Photo du Pokémon"
+                src="{{pokeapiService.getImage(id)}}" alt="Photo du Pokémon"
                 onerror="this.src='../../assets/img/teamrocket.webp'">
         </div>
 
-        <div></div>
+        <div></div> -->
 
     </div>
 </div>
