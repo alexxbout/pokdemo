@@ -1,16 +1,21 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Pokemon } from './pokemon';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { Pokemon } from "./pokemon";
+
+/**
+ * NOTE: Avec Angular, il est possible d'utiliser les Observables ainsi que les Promises.
+ */
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class PokeapiService {
-  private allUrl = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0';
-  private oneUrl = 'https://pokeapi.co/api/v2/pokemon/';
-  private imageUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/';
+  private allUrl = "https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0";
+  private oneUrl = "https://pokeapi.co/api/v2/pokemon-species/";
+  private imageUrl =
+    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 
   constructor(private http: HttpClient) {}
 
@@ -27,7 +32,7 @@ export class PokeapiService {
   }
 
   getIdFromUrl(url: string): number {
-    const urlSplit = url.split('/');
+    const urlSplit = url.split("/");
     return parseInt(urlSplit[urlSplit.length - 2]);
   }
 
@@ -36,6 +41,17 @@ export class PokeapiService {
   }
 
   getImage(id: number): string {
-    return this.imageUrl + id + '.png';
+    return this.imageUrl + id + ".png";
+  }
+
+  getFrenchName(id: number): Observable<string> {
+    return this.getPokemon(id).pipe(
+      map((pokemon: any) => {
+        if (pokemon && pokemon.names && pokemon.names.length >= 4) {
+          return pokemon.names[4].name;
+        }
+        return "";
+      })
+    );
   }
 }

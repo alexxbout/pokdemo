@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        pokemon: ["pokemon", "sans-serif"]
+        pokemon: ["pokemon", "sans-serif"],
+        inter: ["inter", "sans-serif"],
       },
       colors: {
         "pokemon-yellow": "#FFCC00",

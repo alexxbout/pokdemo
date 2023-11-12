@@ -1,11 +1,5 @@
-<div>
-  <app-info [pokemonId]="selectedPokemonId"></app-info>
+<app-info></app-info>
 
-  <div class="flex flex-col items-center gap-y-10">
-    <img src="assets/img/pokedex.png" alt="Pokedex" />
-
-    <div class="flex flex-col items-center justify-center gap-y-10">
-      <app-search (selectedPokemonId)="onPokemonSelected($event)"></app-search>
-    </div>
-  </div>
+<div class="flex flex-col items-center gap-y-10">
+  <app-search></app-search>
 </div>
