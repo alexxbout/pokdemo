@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Pokemon } from "./pokemon";
+import { Pokemon, PokemonSpecies } from "./pokemon";
 
 /**
  * NOTE: Avec Angular, il est possible d'utiliser les Observables ainsi que les Promises.
@@ -13,7 +13,8 @@ import { Pokemon } from "./pokemon";
 })
 export class PokeapiService {
   private allUrl = "https://pokeapi.co/api/v2/pokemon-species?limit=100000&offset=0";
-  private oneUrl = "https://pokeapi.co/api/v2/pokemon-species/";
+  private speciesUrl = "https://pokeapi.co/api/v2/pokemon-species/";
+  private pokemonUrl = "https://pokeapi.co/api/v2/pokemon/";
   private imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 
   constructor(private http: HttpClient) {}
@@ -36,21 +37,23 @@ export class PokeapiService {
   }
 
   getPokemon(id: number): Observable<Pokemon> {
-    return this.http.get<Pokemon>(this.oneUrl + id);
+    return this.http.get<Pokemon>(this.pokemonUrl + id);
+  }
+
+  getSpecies(id: number): Observable<PokemonSpecies> {
+    return this.http.get<PokemonSpecies>(this.speciesUrl + id);
   }
 
   getImage(id: number): string {
     return this.imageUrl + id + ".png";
   }
 
-  getFrenchName(id: number): Observable<string> {
-    return this.getPokemon(id).pipe(
+  getPokemonName(id: number, language: string): Observable<string> {
+    return this.getSpecies(id).pipe(
       map((pokemon: any) => {
-        if (pokemon && pokemon.names && pokemon.names.length >= 4) {
-          return pokemon.names[4].name;
-        }
-        return "";
+        const nameObj = pokemon.names.find((name: any) => name.language.name === language);
+        return nameObj ? nameObj.name : "";
       })
     );
-  }
+  }  
 }

@@ -61,8 +61,8 @@ export class SearchComponent {
     const targetIndex = side === "LEFT" ? index - 1 : index + 1;
 
     if (targetIndex >= 0 && targetIndex < this.pokemons.length) {
-      const translateValue = side === "LEFT" ? "-100vw" : "100vw";
-      const reverseTranslateValue = side === "LEFT" ? "100vw" : "-100vw";
+      const translateValue = side === "LEFT" ? "100vw" : "-100vw";
+      const reverseTranslateValue = side === "LEFT" ? "-100vw" : "100vw";
 
       if (this.pokepic) {
         gsap
@@ -70,7 +70,7 @@ export class SearchComponent {
             translateX: translateValue,
             duration: 0.8,
             ease: "power4.inOut",
-            scale: 0,
+            scale: 0.5,
           })
           .then(() => {
             this.selectPokemon(this.pokemons[targetIndex].id);
@@ -100,8 +100,8 @@ export class SearchComponent {
   selectPokemon(id: number): void {
     this.id = id;
 
-    this.pokeapiService.getFrenchName(id).subscribe((frenchName: string) => {
-      this.name = frenchName;
+    this.pokeapiService.getPokemonName(id, "fr").subscribe((name: string) => {
+      this.name = name;
 
       prominent(this.pokeapiService.getImage(this.id), {
         format: "hex",

@@ -10,7 +10,7 @@
 
         <!-- '-webkit-background-clip': 'text', backgroundImage: 'linear-gradient(90deg, ' + color + ', ' + color2 + ')' -->
         <span [ngStyle]="{color: color}"
-            class="drop-shadow-2xl transition-colors duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
+            class="mb-80 drop-shadow-2xl transition-colors duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
             {{ name }}
         </span>
 
@@ -20,13 +20,13 @@
     </div>
 
     <div #pokepic class="absolute">
-        <img class="transition-opacity duration-300 hover:opacity-20 hover:blur aspect-square drop-shadow-2xl saturate-200 rounded-xl"
+        <img class="aspect-square drop-shadow-2xl saturate-200 rounded-xl"
             src="{{pokeapiService.getImage(id)}}">
     </div>
 
     <div class="absolute flex bottom-10 gap-x-5">
         <button (click)="randomPokemon()"
-            class="px-4 py-4 font-bold text-white duration-300 bg-black rounded-full h-max group hover:scale-105">
+            class="p-4 font-bold text-white duration-300 bg-black rounded-full h-max group hover:scale-105">
             <img class="w-6 h-6 transition-transform duration-500 group-hover:rotate-180"
                 src="../../assets/img/random.svg" alt="">
         </button>
@@ -49,9 +49,12 @@
                         {{ pokemon.name }}</option>
                 </select>
             </div>
+
+            <span class="p-1 text-sm font-bold text-black bg-white rounded-full">{{ "#" + id }}</span>
         </div>
 
-        <button (click)="viewDetails()" class="px-4 py-4 font-bold text-white duration-300 bg-black rounded-full hover:scale-105 h-max">
+        <button (click)="viewDetails()"
+            class="p-4 font-bold text-white duration-300 bg-black rounded-full hover:scale-105 h-max">
             Voir les détails
         </button>
     </div>
