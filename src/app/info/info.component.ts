@@ -10,8 +10,9 @@ import { PokemonSpecies } from "../pokemon";
 export class InfoComponent {
   @ViewChild("blur") blur: ElementRef<HTMLElement>;
   @ViewChild("modal") modal: ElementRef<HTMLElement>;
+  @ViewChild("img") img: ElementRef<HTMLElement>;
 
-  @ViewChild("stats_hp") stats_hp: ElementRef<HTMLElement>;
+  // @ViewChild("stats_hp") stats_hp: ElementRef<HTMLElement>;
 
   id: number = 1;
 
@@ -21,6 +22,15 @@ export class InfoComponent {
 
   pokemon: any = null;
   species: any = null;
+
+  stats = [
+    "hp",
+    "attack",
+    "defense",
+    "special-attack",
+    "special-defense",
+    "speed",
+  ];
 
   constructor(public pokeapiService: PokeapiService) {}
 
@@ -38,48 +48,59 @@ export class InfoComponent {
     this.timeline.to(this.blur.nativeElement, {
       duration: 1,
       ease: "power4.out",
-      backdropFilter: !this.isBlur ? "blur(10px)" : "blur(0px)",
+      backdropFilter: !this.isBlur ? "blur(20px)" : "blur(0px)",
     });
 
     this.timeline.fromTo(
       this.modal.nativeElement,
       {
         translateY: "100%",
-        opacity: 1,
-        scale: 0.2,
+        scale: 0,
       },
       {
         translateY: "0%",
-        opacity: 1,
         scale: 1,
         ease: "power4.out",
         duration: 0.8,
       },
       "<"
     );
-  }
 
-  animateStats(stats: any[]) {
-    stats.forEach((stat: any) => {
-      switch (stat.stat.name) {
-        case "hp":
-          gsap.to(this.stats_hp.nativeElement, {
-            duration: 2,
-            delay: 0.5,
-            ease: "power4.out",
-            width: `${this.getRealPercentage(stat.base_stat)}%`,
-          });
-          break;
-      }
-    });
-  }
-
-  resetStats() {
-    this.stats_hp.nativeElement.style.width = "0%";
+    this.timeline.fromTo(
+      this.img.nativeElement,
+      {
+        translateY: "80%",
+      },
+      {
+        translateY: "0%",
+        duration: 1.2,
+        ease: "power4.out",
+      },
+      "<"
+    );
   }
 
   getRealPercentage(value: number): number {
     return Math.round((value * 100) / 255);
+  }
+
+  getColor(stat: string): string {
+    switch (stat) {
+      case "hp":
+        return "linear-gradient(to right, #d31027, #ea384d)";
+      case "attack":
+        return "linear-gradient(to right, #f46b45, #eea849)";
+      case "defense":
+        return "linear-gradient(to right, #f7971e, #ffd200)";
+      case "special-attack":
+        return "linear-gradient(to right, #95c4ff, #6ddcff)";
+      case "special-defense":
+        return "linear-gradient(to right, #1d976c, #93f9b9)";
+      case "speed":
+        return "linear-gradient(to right, #8e2de2, #4a00e0)";
+      default:
+        return "black";
+    }
   }
 
   toggle(id: number): void {
@@ -88,9 +109,6 @@ export class InfoComponent {
         this.id = id;
         this.pokeapiService.getPokemon(this.id).subscribe((pokemon) => {
           this.pokemon = pokemon;
-
-          console.log(this.species);
-          this.animateStats(this.pokemon.stats);
         });
 
         this.pokeapiService
@@ -104,14 +122,11 @@ export class InfoComponent {
 
         this.timeline.timeScale(1);
         this.timeline.play();
-
-        this.animateStats(this.species.stats);
       } else {
-        this.timeline.timeScale(2.5);
-        this.timeline.reverse().then(() => {
+        this.timeline.reverse(0.6).then(() => {
           this.isBlur = false;
           this.blur.nativeElement.classList.add("hidden");
-          this.resetStats();
+          // this.resetStats();
         });
       }
     }

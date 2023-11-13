@@ -9,7 +9,6 @@ export class AppComponent {
   @ViewChild(InfoComponent) infoComponent: InfoComponent | undefined;
 
   openDetails(id: number) {
-    console.log("AppComponent: openDetails", id);
     // Manually call toggleBlur when id changes
     if (this.infoComponent) {
       this.infoComponent.toggle(id);

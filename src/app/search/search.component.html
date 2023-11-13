@@ -20,8 +20,7 @@
     </div>
 
     <div #pokepic class="absolute">
-        <img class="aspect-square drop-shadow-2xl saturate-200 rounded-xl"
-            src="{{pokeapiService.getImage(id)}}">
+        <img class="aspect-square drop-shadow-2xl saturate-200 rounded-xl" src="{{pokeapiService.getImage(id)}}">
     </div>
 
     <div class="absolute flex bottom-10 gap-x-5">
@@ -40,8 +39,6 @@
             </div>
 
             <div class="flex items-center justify-center font-bold gap-x-2">
-                <!-- <label for="pokedex" class="text-white">Liste</label> -->
-
                 <select [(ngModel)]="id" (change)="selectPokemon(id)" name="pokedex" id="pokedex"
                     class="text-sm p-1 rounded-full w-[220px]">
                     <option [ngValue]="-1" selected disabled>Séléctionnez un Pokémon</option>
@@ -49,8 +46,6 @@
                         {{ pokemon.name }}</option>
                 </select>
             </div>
-
-            <span class="p-1 text-sm font-bold text-black bg-white rounded-full">{{ "#" + id }}</span>
         </div>
 
         <button (click)="viewDetails()"
