@@ -11,7 +11,7 @@
 
         <span *ngIf="species" class="text-4xl font-bold">{{ species.names[4].name + '#' + id }}</span>
 
-        <div *ngIf="pokemon && pokemon.stats" class="flex flex-col justify-between w-1/3 h-full">
+        <div *ngIf="pokemon && pokemon.stats" class="flex flex-col justify-between w-2/4 h-full">
             <div *ngFor="let stat of pokemon.stats" class="flex flex-col gap-y-2">
                 <span class="font-normal text-black">{{ stat.stat.name }}</span>
                 <div class="relative h-4 bg-gray-200 rounded-full">
