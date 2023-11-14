@@ -30,7 +30,7 @@ export class SearchComponent {
 
   enableFilter: boolean = false;
 
-  color: string = "";
+  color: string = "#f0d278";
 
   constructor(public pokeapiService: PokeapiService) {}
 
@@ -100,20 +100,21 @@ export class SearchComponent {
   selectPokemon(id: number): void {
     this.id = id;
 
+    prominent(this.pokeapiService.getImage(this.id), {
+      format: "hex",
+      group: 1,
+      amount: 2,
+    })
+      .then((color) => {
+        this.color = color[1] as string;
+        console.log("Color resolved", color);
+      })
+      .catch(() => {
+        this.color = "#000000";
+      });
+
     this.pokeapiService.getPokemonName(id, "fr").subscribe((name: string) => {
       this.name = name;
-
-      prominent(this.pokeapiService.getImage(this.id), {
-        format: "hex",
-        group: 15,
-        amount: 2,
-      })
-        .then((color) => {
-          this.color = color[1] as string;
-        })
-        .catch(() => {
-          this.color = "#000000";
-        });
     });
   }
 
