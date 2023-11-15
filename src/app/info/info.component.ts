@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import gsap from "gsap";
 import { PokeapiService } from "../pokeapi.service";
-import { PokemonSpecies } from "../pokemon";
+import { PokemonSpecies, Type } from "../pokemon";
 
 @Component({
   selector: "app-info",
@@ -12,8 +12,6 @@ export class InfoComponent {
   @ViewChild("modal") modal: ElementRef<HTMLElement>;
   @ViewChild("img") img: ElementRef<HTMLElement>;
 
-  // @ViewChild("stats_hp") stats_hp: ElementRef<HTMLElement>;
-
   id: number = 1;
 
   isBlur: boolean = false;
@@ -23,16 +21,13 @@ export class InfoComponent {
   pokemon: any = null;
   species: any = null;
 
-  stats = [
-    "hp",
-    "attack",
-    "defense",
-    "special-attack",
-    "special-defense",
-    "speed",
-  ];
+  types: Type[] = [];
 
-  constructor(public pokeapiService: PokeapiService) {}
+  constructor(public pokeapiService: PokeapiService) {
+    this.pokeapiService.getTypes().subscribe((types) => {
+      this.types = types;
+    });
+  }
 
   ngAfterViewInit(): void {
     this.timeline = gsap.timeline({
@@ -84,22 +79,71 @@ export class InfoComponent {
     return Math.round((value * 100) / 255);
   }
 
-  getColor(stat: string): string {
-    switch (stat) {
-      case "hp":
-        return "linear-gradient(to right, #d31027, #ea384d)";
-      case "attack":
-        return "linear-gradient(to right, #f46b45, #eea849)";
-      case "defense":
-        return "linear-gradient(to right, #f7971e, #ffd200)";
-      case "special-attack":
-        return "linear-gradient(to right, #95c4ff, #6ddcff)";
-      case "special-defense":
-        return "linear-gradient(to right, #1d976c, #93f9b9)";
-      case "speed":
-        return "linear-gradient(to right, #8e2de2, #4a00e0)";
-      default:
-        return "black";
+  getColor(category: "statistic" | "type", value: string): string {
+    if (category === "type") {
+      // Gérer la couleur en fonction du type
+      switch (value) {
+        case "normal":
+          return "#A8A77A";
+        case "fighting":
+          return "#C22E28";
+        case "flying":
+          return "#A98FF3";
+        case "poison":
+          return "#A33EA1";
+        case "ground":
+          return "#E2BF65";
+        case "rock":
+          return "#B6A136";
+        case "bug":
+          return "#A6B91A";
+        case "ghost":
+          return "#735797";
+        case "steel":
+          return "#B7B7CE";
+        case "fire":
+          return "#EE8130";
+        case "water":
+          return "#6390F0";
+        case "grass":
+          return "#7AC74C";
+        case "electric":
+          return "#F7D02C";
+        case "psychic":
+          return "#F95587";
+        case "ice":
+          return "#96D9D6";
+        case "dragon":
+          return "#6F35FC";
+        case "dark":
+          return "#705746";
+        case "fairy":
+          return "#D685AD";
+        case "unknown":
+          return "#000000";
+        case "shadow":
+          return "#000000";
+        default:
+          return "#000000";
+      }
+    } else {
+      // Gérer la couleur en fonction de la statistique si la catégorie est "statistic"
+      switch (value) {
+        case "hp":
+          return "#d31027";
+        case "attack":
+          return "#f46b45";
+        case "defense":
+          return "#f7971e";
+        case "special-attack":
+          return "#95c4ff";
+        case "special-defense":
+          return "#1d976c";
+        case "speed":
+          return "#8e2de2";
+        default:
+          return "#000000"; // Couleur par défaut pour les statistiques non gérées
+      }
     }
   }
 
@@ -126,7 +170,6 @@ export class InfoComponent {
         this.timeline.reverse(0.6).then(() => {
           this.isBlur = false;
           this.blur.nativeElement.classList.add("hidden");
-          // this.resetStats();
         });
       }
     }

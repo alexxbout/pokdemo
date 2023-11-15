@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from "@angular/core";
 import { prominent } from "color.js";
-import gsap from "gsap";
 import { PokeapiService } from "../pokeapi.service";
 
 @Component({
@@ -34,7 +33,6 @@ export class SearchComponent {
 
   constructor(public pokeapiService: PokeapiService) {}
 
-  // Méthode appelée au chargement de la page une fois que le composant est initialisé
   ngOnInit(): void {
     this.pokeapiService.getPokemonList().subscribe((pokemons) => {
       this.pokemons = pokemons;
@@ -60,41 +58,15 @@ export class SearchComponent {
     const index = this.pokemons.findIndex((e) => e.id === this.id);
     const targetIndex = side === "LEFT" ? index - 1 : index + 1;
 
-    if (targetIndex >= 0 && targetIndex < this.pokemons.length) {
-      const translateValue = side === "LEFT" ? "100vw" : "-100vw";
-      const reverseTranslateValue = side === "LEFT" ? "-100vw" : "100vw";
-
-      if (this.pokepic) {
-        gsap
-          .to(this.pokepic.nativeElement, {
-            translateX: translateValue,
-            duration: 0.8,
-            ease: "power4.inOut",
-            scale: 0.5,
-          })
-          .then(() => {
-            this.selectPokemon(this.pokemons[targetIndex].id);
-            if (this.pokepic) {
-              gsap.fromTo(
-                this.pokepic.nativeElement,
-                {
-                  translateX: reverseTranslateValue,
-                  duration: 0,
-                },
-                {
-                  translateX: "0%",
-                  ease: "power4.out",
-                  scale: 1,
-                }
-              );
-            }
-          });
-      }
+    if (
+      this.pokepic &&
+      targetIndex >= 0 &&
+      targetIndex < this.pokemons.length
+    ) {
+      this.selectPokemon(this.pokemons[targetIndex].id);
     }
 
-    setTimeout(() => {
-      this.switching = false;
-    }, 1000);
+    this.switching = false;
   }
 
   selectPokemon(id: number): void {
@@ -102,12 +74,11 @@ export class SearchComponent {
 
     prominent(this.pokeapiService.getImage(this.id), {
       format: "hex",
-      group: 1,
-      amount: 2,
+      group: 30,
+      amount: 3,
     })
-      .then((color) => {
-        this.color = color[1] as string;
-        console.log("Color resolved", color);
+      .then((colors) => {
+        this.color = colors[1] as string;        
       })
       .catch(() => {
         this.color = "#000000";

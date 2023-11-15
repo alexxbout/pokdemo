@@ -47,3 +47,10 @@ export class PokemonSpecies {
   shape: {} = {};
   varieties: any[] = [];
 }
+
+export interface Type {
+  count: number;
+  next: string;
+  previous: null;
+  results: { name: string; url: string }[];
+}

@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Pokemon, PokemonSpecies } from "./pokemon";
+import { Pokemon, PokemonSpecies, Type } from "./pokemon";
 
 /**
  * NOTE: Avec Angular, il est possible d'utiliser les Observables ainsi que les Promises.
@@ -16,6 +16,7 @@ export class PokeapiService {
   private speciesUrl = "https://pokeapi.co/api/v2/pokemon-species/";
   private pokemonUrl = "https://pokeapi.co/api/v2/pokemon/";
   private imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
+  private typesUrl = "https://pokeapi.co/api/v2/type/";
 
   constructor(private http: HttpClient) {}
 
@@ -55,5 +56,9 @@ export class PokeapiService {
         return nameObj ? nameObj.name : "";
       })
     );
-  }  
+  }
+
+  getTypes(): Observable<Type[]> {
+    return this.http.get<Type[]>(this.typesUrl);
+  }
 }

@@ -8,7 +8,12 @@
         <img (click)="switch('LEFT')" class="z-10 transition-transform duration-300 cursor-pointer hover:-translate-x-2"
             src="../../assets/img/chevron_left.svg" alt="">
 
-        <!-- '-webkit-background-clip': 'text', backgroundImage: 'linear-gradient(90deg, ' + color + ', ' + color2 + ')' -->
+        <!-- <span
+            [ngStyle]="{'-webkit-background-clip': 'text', backgroundImage: 'linear-gradient(90deg,' + colors[0] + ',' + colors[1] + ')'}"
+            class="text-transparent mb-80 drop-shadow-2xl transition-all duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
+            {{ name }}
+        </span> -->
+        
         <span [ngStyle]="{color: color}"
             class="mb-80 drop-shadow-2xl transition-colors duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
             {{ name }}
