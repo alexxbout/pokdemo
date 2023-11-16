@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import gsap from "gsap";
 import { PokeapiService } from "../pokeapi.service";
-import { PokemonSpecies, Type } from "../pokemon";
+import { PokemonSpecies } from "../pokemon";
 
 @Component({
   selector: "app-info",
@@ -21,15 +21,13 @@ export class InfoComponent {
   pokemon: any = null;
   species: any = null;
 
-  types: Type[] = [];
+  // types: Type[] = [];
 
   stats: { name: string; value: number }[] = [];
 
-  constructor(public pokeapiService: PokeapiService) {
-    this.pokeapiService.getTypes().subscribe((types) => {
-      this.types = types;
-    });
-  }
+  types: { name: string; color: string }[] = [];
+
+  constructor(public pokeapiService: PokeapiService) {}
 
   ngAfterViewInit(): void {
     this.timeline = gsap.timeline({
@@ -85,45 +83,45 @@ export class InfoComponent {
     if (category === "type") {
       // Gérer la couleur en fonction du type
       switch (value) {
-        case "normal":
+        case "Normal":
           return "#A8A77A";
-        case "fighting":
+        case "Combat":
           return "#C22E28";
-        case "flying":
+        case "Vol":
           return "#A98FF3";
-        case "poison":
+        case "Poison":
           return "#A33EA1";
-        case "ground":
+        case "Sol":
           return "#E2BF65";
-        case "rock":
+        case "Roche":
           return "#B6A136";
-        case "bug":
+        case "Insecte":
           return "#A6B91A";
-        case "ghost":
+        case "Spectre":
           return "#735797";
-        case "steel":
+        case "Acier":
           return "#B7B7CE";
-        case "fire":
+        case "Feu":
           return "#EE8130";
-        case "water":
+        case "Eau":
           return "#6390F0";
-        case "grass":
+        case "Plante":
           return "#7AC74C";
-        case "electric":
+        case "Électrik":
           return "#F7D02C";
-        case "psychic":
+        case "Psy":
           return "#F95587";
-        case "ice":
+        case "Glace":
           return "#96D9D6";
-        case "dragon":
+        case "Dragon":
           return "#6F35FC";
-        case "dark":
+        case "Ténèbres":
           return "#705746";
-        case "fairy":
+        case "Fée":
           return "#D685AD";
-        case "unknown":
+        case "???":
           return "#000000";
-        case "shadow":
+        case "Ombre":
           return "#000000";
         default:
           return "#000000";
@@ -158,7 +156,6 @@ export class InfoComponent {
         this.pokeapiService.getPokemon(this.id).subscribe((pokemon) => {
           this.pokemon = pokemon;
 
-          // Load french stats
           this.pokemon.stats.forEach((stat: any) => {
             this.pokeapiService
               .getStatName(stat.stat.url, "fr")
@@ -166,6 +163,17 @@ export class InfoComponent {
                 this.stats.push({
                   name,
                   value: stat.base_stat,
+                });
+              });
+          });
+
+          this.pokemon.types.forEach((type: any) => {
+            this.pokeapiService
+              .getStatName(type.type.url, "fr")
+              .subscribe((name) => {
+                this.types.push({
+                  name,
+                  color: this.getColor("type", name),
                 });
               });
           });
@@ -193,5 +201,6 @@ export class InfoComponent {
 
   reset(): void {
     this.stats = [];
+    this.types = [];
   }
 }

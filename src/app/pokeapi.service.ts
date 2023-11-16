@@ -71,4 +71,12 @@ export class PokeapiService {
     );
   }
 
+  getTypeName(url: string, language: string): Observable<string> {
+    return this.http.get<any>(url).pipe(
+      map((type: any) => {
+        const nameObj = type.names.find((name: any) => name.language.name === language);
+        return nameObj ? nameObj.name : "";
+      })
+    );
+  }
 }
