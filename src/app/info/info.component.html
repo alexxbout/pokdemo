@@ -16,15 +16,15 @@
                 class="px-3 py-2 text-white rounded-full" [ngStyle]="{ backgroundColor: getColor('type', type.type.name)}">{{ type.type.name }}</span>
         </div>
 
-        <div *ngIf="pokemon && pokemon.stats" class="flex flex-col justify-between w-2/5 h-full">
-            <div *ngFor="let stat of pokemon.stats" class="flex flex-col gap-y-2">
-                <span class="font-normal text-black">{{ stat.stat.name }}</span>
+        <div class="flex flex-col justify-between w-2/5 h-full">
+            <div *ngFor="let stat of stats" class="flex flex-col gap-y-2">
+                <span class="font-normal text-black">{{ stat.name }}</span>
                 <div class="relative h-4 bg-gray-200 rounded-full">
-                    <div [ngStyle]="{ width: getRealPercentage(stat.base_stat) + '%', background: getColor('statistic', stat.stat.name) }"
+                    <div [ngStyle]="{ width: getRealPercentage(stat.value) + '%', background: getColor('statistic', stat.name) }"
                         class="absolute inset-y-0 left-0 h-full rounded-full">
                         <div
                             class="absolute right-0 flex items-center justify-center h-5 px-3 py-3 my-0 text-sm text-center text-white -translate-y-1/2 bg-gray-800 rounded-md aspect-square w-max top-1/2">
-                            {{stat.base_stat}}
+                            {{stat.value}}
                         </div>
                     </div>
                 </div>

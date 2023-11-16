@@ -61,4 +61,14 @@ export class PokeapiService {
   getTypes(): Observable<Type[]> {
     return this.http.get<Type[]>(this.typesUrl);
   }
+
+  getStatName(url: string, language: string): Observable<string> {
+    return this.http.get<any>(url).pipe(
+      map((stat: any) => {
+        const nameObj = stat.names.find((name: any) => name.language.name === language);
+        return nameObj ? nameObj.name : "";
+      })
+    );
+  }
+
 }

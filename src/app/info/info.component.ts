@@ -23,6 +23,8 @@ export class InfoComponent {
 
   types: Type[] = [];
 
+  stats: { name: string; value: number }[] = [];
+
   constructor(public pokeapiService: PokeapiService) {
     this.pokeapiService.getTypes().subscribe((types) => {
       this.types = types;
@@ -129,17 +131,17 @@ export class InfoComponent {
     } else {
       // Gérer la couleur en fonction de la statistique si la catégorie est "statistic"
       switch (value) {
-        case "hp":
+        case "PV":
           return "#d31027";
-        case "attack":
+        case "Attaque":
           return "#f46b45";
-        case "defense":
+        case "Défense":
           return "#f7971e";
-        case "special-attack":
+        case "Attaque Spéciale":
           return "#95c4ff";
-        case "special-defense":
+        case "Défense Spéciale":
           return "#1d976c";
-        case "speed":
+        case "Vitesse":
           return "#8e2de2";
         default:
           return "#000000"; // Couleur par défaut pour les statistiques non gérées
@@ -150,9 +152,23 @@ export class InfoComponent {
   toggle(id: number): void {
     if (this.blur && this.modal && this.timeline) {
       if (!this.isBlur) {
+        this.reset();
+
         this.id = id;
         this.pokeapiService.getPokemon(this.id).subscribe((pokemon) => {
           this.pokemon = pokemon;
+
+          // Load french stats
+          this.pokemon.stats.forEach((stat: any) => {
+            this.pokeapiService
+              .getStatName(stat.stat.url, "fr")
+              .subscribe((name) => {
+                this.stats.push({
+                  name,
+                  value: stat.base_stat,
+                });
+              });
+          });
         });
 
         this.pokeapiService
@@ -173,5 +189,9 @@ export class InfoComponent {
         });
       }
     }
+  }
+
+  reset(): void {
+    this.stats = [];
   }
 }
