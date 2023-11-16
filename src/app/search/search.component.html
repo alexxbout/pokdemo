@@ -1,18 +1,12 @@
 <div class="relative flex flex-col items-center justify-center w-screen h-screen p-10 overflow-hidden">
     <div class="absolute flex items-center w-max top-10 left-10 gap-x-2">
         <img class="w-10" src="../../assets/img/pokeball.svg" alt="">
-        <span class="text-2xl font-bold text-black">Pokémon</span>
+        <span class="text-2xl font-bold text-pokemon-black">Pokémon</span>
     </div>
 
     <div class="relative flex items-center justify-between w-full gap-x-10">
         <img (click)="switch('LEFT')" class="z-10 transition-transform duration-300 cursor-pointer hover:-translate-x-2"
             src="../../assets/img/chevron_left.svg" alt="">
-
-        <!-- <span
-            [ngStyle]="{'-webkit-background-clip': 'text', backgroundImage: 'linear-gradient(90deg,' + colors[0] + ',' + colors[1] + ')'}"
-            class="text-transparent mb-80 drop-shadow-2xl transition-all duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
-            {{ name }}
-        </span> -->
 
         <span [ngStyle]="{color: color}"
             class="mb-80 drop-shadow-2xl transition-colors duration-700 font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
@@ -30,12 +24,12 @@
 
     <div class="absolute flex bottom-10 gap-x-5">
         <button (click)="randomPokemon()"
-            class="p-4 font-bold text-white duration-300 bg-black rounded-full h-max group hover:scale-105">
+            class="p-4 font-bold text-white duration-300 rounded-full bg-pokemon-black h-max group hover:scale-105">
             <img class="w-6 h-6 transition-transform duration-500 group-hover:rotate-180"
                 src="../../assets/img/random.svg" alt="">
         </button>
 
-        <div class="flex items-center justify-center px-4 py-4 bg-black rounded-full h-max w-max gap-x-5">
+        <div class="flex items-center justify-center px-4 py-4 rounded-full bg-pokemon-black h-max w-max gap-x-5">
             <div class="flex items-center justify-center font-bold gap-x-2">
                 <label for="filter" class="text-white">Filtre</label>
                 <input [(ngModel)]="enableFilter" type="checkbox" name="enableFilter" id="enableFilter">
@@ -45,7 +39,7 @@
 
             <div class="flex items-center justify-center font-bold gap-x-2">
                 <select [(ngModel)]="id" (change)="selectPokemon(id)" name="pokedex" id="pokedex"
-                    class="text-sm p-1 rounded-full w-[220px]">
+                    class="text-sm p-1 rounded-full w-[220px] appearance-none px-2">
                     <option [ngValue]="-1" selected disabled>Séléctionnez un Pokémon</option>
                     <option *ngFor="let pokemon of (pokemons | filterPokemonPipe:'name':filter)" [ngValue]="pokemon.id">
                         {{ pokemon.name }}</option>
@@ -54,7 +48,7 @@
         </div>
 
         <button (click)="viewDetails()"
-            class="p-4 font-bold text-white duration-300 bg-black rounded-full hover:scale-105 h-max">
+            class="p-4 font-bold text-white duration-300 rounded-full bg-pokemon-black hover:scale-105 h-max">
             Voir les détails
         </button>
     </div>

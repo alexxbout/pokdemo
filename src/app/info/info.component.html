@@ -12,7 +12,7 @@
         </svg>
 
         <!-- Pokemon Name and Id -->
-        <span *ngIf="species" class="text-4xl font-bold">{{ species.names[4].name + '#' + id }}</span>
+        <span *ngIf="species" class="text-4xl font-bold text-pokemon-black">{{ species.names[4].name + '#' + id }}</span>
 
         <div class="grid w-full h-full grid-cols-2">
             <div class="flex flex-col justify-between w-full h-full gap-y-7">
@@ -25,12 +25,12 @@
                 <!-- Stats -->
                 <div class="flex flex-col justify-between w-full h-full">
                     <div *ngFor="let stat of stats" class="flex flex-col gap-y-2">
-                        <span class="font-normal text-black">{{ stat.name }}</span>
+                        <span class="font-normal text-pokemon-black">{{ stat.name }}</span>
                         <div class="relative h-4 bg-gray-100 rounded-full">
                             <div [ngStyle]="{ width: getRealPercentage(stat.value) + '%', background: getColor('statistic', stat.name) }"
                                 class="absolute inset-y-0 left-0 h-full rounded-full">
                                 <div
-                                    class="absolute right-0 flex items-center justify-center h-5 px-4 py-4 my-0 text-sm font-semibold text-center text-black -translate-y-1/2 bg-gray-200 rounded-full backdrop-blur-lg bg-opacity-20 aspect-square w-max top-1/2">
+                                    class="absolute right-0 flex items-center justify-center h-5 px-4 py-4 my-0 text-sm font-semibold text-center -translate-y-1/2 bg-gray-200 rounded-full text-pokemon-black backdrop-blur-lg bg-opacity-20 aspect-square w-max top-1/2">
                                     {{stat.value}}
                                 </div>
                             </div>

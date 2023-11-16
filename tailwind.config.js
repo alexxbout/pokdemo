@@ -11,7 +11,8 @@ module.exports = {
       },
       colors: {
         "pokemon-yellow": "#FFCC00",
-        "pokemon-blue": "#2C72B8"
+        "pokemon-blue": "#2C72B8",
+        "pokemon-black": "#212633",
       }
     },
   },
