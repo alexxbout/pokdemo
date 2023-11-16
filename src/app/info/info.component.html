@@ -9,21 +9,24 @@
                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
         </svg>
 
+        <!-- Pokemon Name and Id -->
         <span *ngIf="species" class="text-4xl font-bold">{{ species.names[4].name + '#' + id }}</span>
 
+        <!-- Types -->
         <div class="flex items-center gap-x-3">
-            <span *ngFor="let type of types"
-                class="px-3 py-2 text-white rounded-full" [ngStyle]="{ backgroundColor: getColor('type', type.name)}">{{ type.name }}</span>
+            <span *ngFor="let type of types" class="px-3 py-2 font-semibold text-white rounded-full"
+                [ngStyle]="{ backgroundColor: getColor('type', type.name)}">{{ type.name }}</span>
         </div>
 
+        <!-- Stats -->
         <div class="flex flex-col justify-between w-2/5 h-full">
             <div *ngFor="let stat of stats" class="flex flex-col gap-y-2">
                 <span class="font-normal text-black">{{ stat.name }}</span>
-                <div class="relative h-4 bg-gray-200 rounded-full">
+                <div class="relative h-4 bg-gray-100 rounded-full">
                     <div [ngStyle]="{ width: getRealPercentage(stat.value) + '%', background: getColor('statistic', stat.name) }"
                         class="absolute inset-y-0 left-0 h-full rounded-full">
                         <div
-                            class="absolute right-0 flex items-center justify-center h-5 px-3 py-3 my-0 text-sm text-center text-white -translate-y-1/2 bg-gray-800 rounded-md aspect-square w-max top-1/2">
+                            class="absolute right-0 flex items-center justify-center h-5 px-4 py-4 my-0 text-sm font-semibold text-center text-black -translate-y-1/2 bg-gray-200 rounded-full backdrop-blur-lg bg-opacity-20 aspect-square w-max top-1/2">
                             {{stat.value}}
                         </div>
                     </div>

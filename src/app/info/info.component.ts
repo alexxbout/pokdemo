@@ -21,8 +21,6 @@ export class InfoComponent {
   pokemon: any = null;
   species: any = null;
 
-  // types: Type[] = [];
-
   stats: { name: string; value: number }[] = [];
 
   types: { name: string; color: string }[] = [];
@@ -160,10 +158,15 @@ export class InfoComponent {
             this.pokeapiService
               .getStatName(stat.stat.url, "fr")
               .subscribe((name) => {
-                this.stats.push({
-                  name,
-                  value: stat.base_stat,
-                });
+                // Insert the stat at the beginning of the array sorted by name
+                this.stats.splice(
+                  this.stats.findIndex((s) => s.name > name),
+                  0,
+                  {
+                    name,
+                    value: stat.base_stat,
+                  }
+                );
               });
           });
 
