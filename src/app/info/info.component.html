@@ -1,5 +1,7 @@
-<div #blur
-    class="absolute z-20 flex items-center justify-center hidden w-screen h-screen overflow-hidden bg-gray-400 bg-opacity-20 will-change-auto">
+<div class="absolute flex items-center justify-center w-screen h-screen overflow-hidden">
+    <div #blur class="absolute z-20 hidden w-full h-full overflow-hidden bg-gray-400 bg-opacity-20 backdrop-blur-lg">
+    </div>
+
     <div #modal
         class="relative z-20 flex flex-col w-3/5 p-10 bg-white will-change-transform gap-y-7 drop-shadow-2xl aspect-square rounded-2xl h-2/3">
         <svg (click)="toggle(-1)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -12,29 +14,35 @@
         <!-- Pokemon Name and Id -->
         <span *ngIf="species" class="text-4xl font-bold">{{ species.names[4].name + '#' + id }}</span>
 
-        <!-- Types -->
-        <div class="flex items-center gap-x-3">
-            <span *ngFor="let type of types" class="px-3 py-2 font-semibold text-white rounded-full"
-                [ngStyle]="{ backgroundColor: getColor('type', type.name)}">{{ type.name }}</span>
-        </div>
+        <div class="grid w-full h-full grid-cols-2">
+            <div class="flex flex-col justify-between w-full h-full gap-y-7">
+                <!-- Types -->
+                <div class="flex flex-wrap items-center w-full gap-x-3">
+                    <span *ngFor="let type of types" class="px-3 py-2 font-semibold text-white rounded-full"
+                        [ngStyle]="{ backgroundColor: getColor('type', type.name)}">{{ type.name }}</span>
+                </div>
 
-        <!-- Stats -->
-        <div class="flex flex-col justify-between w-2/5 h-full">
-            <div *ngFor="let stat of stats" class="flex flex-col gap-y-2">
-                <span class="font-normal text-black">{{ stat.name }}</span>
-                <div class="relative h-4 bg-gray-100 rounded-full">
-                    <div [ngStyle]="{ width: getRealPercentage(stat.value) + '%', background: getColor('statistic', stat.name) }"
-                        class="absolute inset-y-0 left-0 h-full rounded-full">
-                        <div
-                            class="absolute right-0 flex items-center justify-center h-5 px-4 py-4 my-0 text-sm font-semibold text-center text-black -translate-y-1/2 bg-gray-200 rounded-full backdrop-blur-lg bg-opacity-20 aspect-square w-max top-1/2">
-                            {{stat.value}}
+                <!-- Stats -->
+                <div class="flex flex-col justify-between w-full h-full">
+                    <div *ngFor="let stat of stats" class="flex flex-col gap-y-2">
+                        <span class="font-normal text-black">{{ stat.name }}</span>
+                        <div class="relative h-4 bg-gray-100 rounded-full">
+                            <div [ngStyle]="{ width: getRealPercentage(stat.value) + '%', background: getColor('statistic', stat.name) }"
+                                class="absolute inset-y-0 left-0 h-full rounded-full">
+                                <div
+                                    class="absolute right-0 flex items-center justify-center h-5 px-4 py-4 my-0 text-sm font-semibold text-center text-black -translate-y-1/2 bg-gray-200 rounded-full backdrop-blur-lg bg-opacity-20 aspect-square w-max top-1/2">
+                                    {{stat.value}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <img #img class="absolute -bottom-5 -right-20 saturate-200 drop-shadow-2xl"
-            src="{{ pokeapiService.getImage(id) }}" alt="">
+            <div class="relative flex items-center justify-center w-full h-full">
+                <img #img class="saturate-200 drop-shadow-2xl w-[30vw] absolute -bottom-16 -right-28"
+                src="{{ pokeapiService.getImage(id) }}" alt="">
+            </div>
+        </div>
     </div>
 </div>

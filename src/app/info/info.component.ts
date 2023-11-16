@@ -28,6 +28,8 @@ export class InfoComponent {
   constructor(public pokeapiService: PokeapiService) {}
 
   ngAfterViewInit(): void {
+    const duration = 0.6;
+
     this.timeline = gsap.timeline({
       paused: true,
       onComplete: () => {
@@ -38,36 +40,29 @@ export class InfoComponent {
       },
     });
 
-    this.timeline.to(this.blur.nativeElement, {
-      duration: 1,
-      ease: "power4.out",
-      backdropFilter: !this.isBlur ? "blur(20px)" : "blur(0px)",
-    });
+    this.timeline.fromTo(
+      this.blur.nativeElement,
+      {
+        opacity: 0,
+      },
+      {
+        duration: duration,
+        ease: "power4.out",
+        opacity: 1
+      }
+    );
 
     this.timeline.fromTo(
       this.modal.nativeElement,
       {
-        translateY: "100%",
-        scale: 0,
+        scale: 0.9,
+        opacity: 0,
       },
       {
-        translateY: "0%",
         scale: 1,
+        opacity: 1,
         ease: "power4.out",
-        duration: 0.8,
-      },
-      "<"
-    );
-
-    this.timeline.fromTo(
-      this.img.nativeElement,
-      {
-        translateY: "80%",
-      },
-      {
-        translateY: "0%",
-        duration: 1.2,
-        ease: "power4.out",
+        duration: duration,
       },
       "<"
     );
@@ -158,15 +153,10 @@ export class InfoComponent {
             this.pokeapiService
               .getStatName(stat.stat.url, "fr")
               .subscribe((name) => {
-                // Insert the stat at the beginning of the array sorted by name
-                this.stats.splice(
-                  this.stats.findIndex((s) => s.name > name),
-                  0,
-                  {
-                    name,
-                    value: stat.base_stat,
-                  }
-                );
+                this.stats.push({
+                  name,
+                  value: stat.base_stat,
+                });
               });
           });
 
@@ -194,7 +184,7 @@ export class InfoComponent {
         this.timeline.timeScale(1);
         this.timeline.play();
       } else {
-        this.timeline.reverse(0.6).then(() => {
+        this.timeline.reverse(0.3).then(() => {
           this.isBlur = false;
           this.blur.nativeElement.classList.add("hidden");
         });
