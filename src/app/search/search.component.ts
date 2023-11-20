@@ -35,8 +35,16 @@ export class SearchComponent {
 
   ngOnInit(): void {
     this.pokeapiService.getPokemonList().subscribe((pokemons) => {
+
+      pokemons.forEach((pokemon) => {
+        this.pokeapiService.getPokemonName(pokemon.id, "fr").subscribe((name) => {
+          pokemon.name = name;
+        });
+      });
+
       this.pokemons = pokemons;
 
+      // Preselect Pikachu
       if (pokemons.length > 0) {
         const pokemon = pokemons[24];
         this.selectPokemon(pokemon.id);
