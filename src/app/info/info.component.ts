@@ -11,6 +11,7 @@ export class InfoComponent {
   @ViewChild("blur") blur: ElementRef<HTMLElement>;
   @ViewChild("modal") modal: ElementRef<HTMLElement>;
   @ViewChild("img") img: ElementRef<HTMLElement>;
+  @ViewChild("container") container: ElementRef<HTMLElement>;
 
   id: number = 1;
   name: string = "";
@@ -145,6 +146,8 @@ export class InfoComponent {
     if (this.blur && this.modal && this.timeline) {
       if (!this.isBlur) {
         this.isBlur = true;
+
+        this.container.nativeElement.classList.remove("hidden");
         this.blur.nativeElement.classList.remove("hidden");
 
         this.timeline.timeScale(1);
@@ -153,6 +156,7 @@ export class InfoComponent {
         this.timeline.reverse(0.3).then(() => {
           this.isBlur = false;
           this.blur.nativeElement.classList.add("hidden");
+          this.container.nativeElement.classList.add("hidden");
         });
       }
     }
