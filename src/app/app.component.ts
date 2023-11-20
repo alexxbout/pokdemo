@@ -8,9 +8,15 @@ import { InfoComponent } from "./info/info.component";
 export class AppComponent {
   @ViewChild(InfoComponent) infoComponent: InfoComponent | undefined;
 
-  openDetails(id: number) {
+  updateDetails(id: number) {
     if (this.infoComponent) {
-      this.infoComponent.toggle(id);
+      this.infoComponent.update(id);
+    }
+  }
+
+  openDetails() {
+    if (this.infoComponent) {
+      this.infoComponent.toggle();
     }
   }
 }

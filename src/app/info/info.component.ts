@@ -49,7 +49,7 @@ export class InfoComponent {
       {
         duration: duration,
         ease: "power4.out",
-        opacity: 1
+        opacity: 1,
       }
     );
 
@@ -141,58 +141,9 @@ export class InfoComponent {
     }
   }
 
-  toggle(id: number): void {
+  toggle(): void {
     if (this.blur && this.modal && this.timeline) {
       if (!this.isBlur) {
-        this.reset();
-
-        this.id = id;
-        this.pokeapiService.getPokemon(this.id).subscribe((pokemon) => {
-          this.pokemon = pokemon;
-
-          this.pokemon.stats.forEach((stat: any) => {
-            this.pokeapiService
-              .getStatName(stat.stat.url, "fr")
-              .subscribe((name) => {
-                this.stats.push({
-                  name,
-                  value: stat.base_stat,
-                });
-
-                this.stats.sort((a, b) => {
-                  return pokemon.stats.findIndex((stat: any) => stat.stat.name === a.name) - pokemon.stats.findIndex((stat: any) => stat.stat.name === b.name);
-                });
-
-                
-              });
-
-              this.pokeapiService.getPokemonName(this.id, "fr").subscribe((name) => {
-                this.name = name;
-              });
-          });
-
-          this.pokemon.types.forEach((type: any) => {
-            this.pokeapiService
-              .getStatName(type.type.url, "fr")
-              .subscribe((name) => {
-                this.types.push({
-                  name,
-                  color: this.getColor("type", name),
-                });
-
-                this.types.sort((a, b) => {
-                  return pokemon.types.findIndex((type: any) => type.type.name === a.name) - pokemon.types.findIndex((type: any) => type.type.name === b.name);
-                });
-              });
-          });
-        });
-
-        this.pokeapiService
-          .getSpecies(this.id)
-          .subscribe((pokemon: PokemonSpecies) => {
-            this.species = pokemon;
-          });
-
         this.isBlur = true;
         this.blur.nativeElement.classList.remove("hidden");
 
@@ -205,6 +156,69 @@ export class InfoComponent {
         });
       }
     }
+  }
+
+  update(id: number): void {
+    this.reset();
+
+    this.id = id;
+    this.pokeapiService.getPokemon(this.id).subscribe((pokemon) => {
+      this.pokemon = pokemon;
+
+      this.pokemon.stats.forEach((stat: any) => {
+        this.pokeapiService
+          .getStatName(stat.stat.url, "fr")
+          .subscribe((name) => {
+            this.stats.push({
+              name,
+              value: stat.base_stat,
+            });
+
+            this.stats.sort((a, b) => {
+              return (
+                pokemon.stats.findIndex(
+                  (stat: any) => stat.stat.name === a.name
+                ) -
+                pokemon.stats.findIndex(
+                  (stat: any) => stat.stat.name === b.name
+                )
+              );
+            });
+          });
+
+        this.pokeapiService.getPokemonName(this.id, "fr").subscribe((name) => {
+          this.name = name;
+        });
+      });
+
+      this.pokemon.types.forEach((type: any) => {
+        this.pokeapiService
+          .getStatName(type.type.url, "fr")
+          .subscribe((name) => {
+            this.types.push({
+              name,
+              color: this.getColor("type", name),
+            });
+
+            this.types.sort((a, b) => {
+              return (
+                pokemon.types.findIndex(
+                  (type: any) => type.type.name === a.name
+                ) -
+                pokemon.types.findIndex(
+                  (type: any) => type.type.name === b.name
+                )
+              );
+            });
+          });
+      });
+    });
+
+    this.pokeapiService
+      .getSpecies(this.id)
+      .subscribe((pokemon: PokemonSpecies) => {
+        this.species = pokemon;
+      });
   }
 
   reset(): void {

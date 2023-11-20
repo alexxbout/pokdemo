@@ -1,10 +1,10 @@
 <div class="absolute flex items-center justify-center w-screen h-screen overflow-hidden">
-    <div #blur (click)="toggle(-1)" class="absolute z-20 hidden w-full h-full overflow-hidden bg-gray-400 bg-opacity-20 backdrop-blur-lg">
+    <div #blur (click)="toggle()" class="absolute z-20 hidden w-full h-full overflow-hidden bg-gray-400 bg-opacity-20 backdrop-blur-lg">
     </div>
 
     <div #modal
         class="relative z-20 flex flex-col w-3/5 p-10 bg-white will-change-transform gap-y-7 drop-shadow-2xl aspect-square rounded-2xl h-2/3">
-        <svg (click)="toggle(-1)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+        <svg (click)="toggle()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
             class="absolute duration-300 cursor-pointer w-7 h-7 top-10 right-10 hover:scale-110 hover:fill-red-600"
             viewBox="0 0 16 16">
             <path

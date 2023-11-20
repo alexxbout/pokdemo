@@ -26,8 +26,7 @@ export class PokeapiService {
       map((response) => {
         return response.results.map((pokemon: any) => {
           const id: number = this.getIdFromUrl(pokemon.url);
-          
-          return { id, name: name };
+          return { id, name: pokemon.name };
         });
       })
     );

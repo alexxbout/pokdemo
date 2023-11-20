@@ -14,7 +14,8 @@ import { PokeapiService } from "../pokeapi.service";
 })
 export class SearchComponent {
   // ? Différence entre [(ngModel)] et [ngModel] ?
-  @Output() viewDetailsEvent: EventEmitter<number> = new EventEmitter<number>();
+  @Output() viewDetailsEvent: EventEmitter<any> = new EventEmitter();
+  @Output() switchEvent: EventEmitter<number> = new EventEmitter<number>();
 
   @ViewChild("pokepic") pokepic: ElementRef<HTMLElement> | undefined;
 
@@ -53,7 +54,7 @@ export class SearchComponent {
   }
 
   viewDetails(): void {
-    this.viewDetailsEvent.emit(this.id);
+    this.viewDetailsEvent.emit();
   }
 
   switch(side: "LEFT" | "RIGHT") {
@@ -87,6 +88,8 @@ export class SearchComponent {
     }
 
     this.id = id;
+
+    this.switchEvent.emit(this.id);
 
     prominent(this.pokeapiService.getImage(this.id), {
       format: "hex",
