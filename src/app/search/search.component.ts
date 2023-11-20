@@ -1,9 +1,7 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
-  Output,
-  ViewChild,
+  Output
 } from "@angular/core";
 import { prominent } from "color.js";
 import { PokeapiService } from "../pokeapi.service";
@@ -16,8 +14,6 @@ export class SearchComponent {
   // ? Différence entre [(ngModel)] et [ngModel] ?
   @Output() viewDetailsEvent: EventEmitter<any> = new EventEmitter();
   @Output() switchEvent: EventEmitter<number> = new EventEmitter<number>();
-
-  @ViewChild("pokepic") pokepic: ElementRef<HTMLElement> | undefined;
 
   pokemons: { id: number; name: string }[] = [];
 
@@ -68,7 +64,6 @@ export class SearchComponent {
     const targetIndex = side === "LEFT" ? index - 1 : index + 1;
 
     if (
-      this.pokepic &&
       targetIndex >= 0 &&
       targetIndex < this.pokemons.length
     ) {
