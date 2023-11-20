@@ -158,6 +158,13 @@ export class InfoComponent {
                   name,
                   value: stat.base_stat,
                 });
+
+                // Sort stats by pokemon's common stats order
+                this.stats.sort((a, b) => {
+                  return pokemon.stats.findIndex((stat: any) => stat.stat.name === a.name) - pokemon.stats.findIndex((stat: any) => stat.stat.name === b.name);
+                });
+
+                
               });
 
               this.pokeapiService.getPokemonName(this.id, "fr").subscribe((name) => {
