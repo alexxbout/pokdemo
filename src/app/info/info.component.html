@@ -12,7 +12,7 @@
         </svg>
 
         <!-- Pokemon Name and Id -->
-        <span *ngIf="species" class="text-4xl font-bold text-pokemon-black">{{ name + '#' + id }}</span>
+        <span *ngIf="species" class="text-4xl font-bold text-pokemon-black">{{ id + '. ' + name }}</span>
 
         <div class="grid w-full h-full grid-cols-2">
             <div class="flex flex-col justify-between w-full h-full gap-y-7">

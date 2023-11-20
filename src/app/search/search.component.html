@@ -30,18 +30,18 @@
         </button>
 
         <div class="flex items-center justify-center px-4 py-4 rounded-full bg-pokemon-black h-max w-max gap-x-5">
-            <div class="flex items-center justify-center font-bold gap-x-2">
+            <div class="flex items-center justify-center font-semibold gap-x-2">
                 <label for="filter" class="text-white">Filtre</label>
                 <input [(ngModel)]="enableFilter" type="checkbox" name="enableFilter" id="enableFilter">
-                <input *ngIf="enableFilter" [(ngModel)]="filter" type="text" id="filter" name="filter"
-                    class="text-sm p-1 rounded-full w-[220px]">
+                <input *ngIf="enableFilter" [(ngModel)]="filter" (ngModelChange)="selectPokemon(filter)" type="text" id="filter" name="filter" placeholder="Filtre sur le nom ou l'ID"
+                    class="text-sm p-1 px-2 rounded-full w-[220px]">
             </div>
 
-            <div class="flex items-center justify-center font-bold gap-x-2">
+            <div class="flex items-center justify-center font-semibold gap-x-2">
                 <select [(ngModel)]="id" (change)="selectPokemon(id)" name="pokedex" id="pokedex"
                     class="text-sm p-1 rounded-full w-[220px] appearance-none px-2">
                     <option [ngValue]="-1" selected disabled>Séléctionnez un Pokémon</option>
-                    <option *ngFor="let pokemon of (pokemons | filterPokemonPipe:'name':filter)" [ngValue]="pokemon.id">
+                    <option *ngFor="let pokemon of (pokemons | filterPokemonPipe:getFilterType():filter)" [ngValue]="pokemon.id">
                         {{ pokemon.name }}</option>
                 </select>
             </div>

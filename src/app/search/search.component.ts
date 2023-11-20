@@ -69,7 +69,15 @@ export class SearchComponent {
     this.switching = false;
   }
 
-  selectPokemon(id: number): void {
+  selectPokemon(id: number|string): void {
+    if (typeof id === "string") {
+      id = parseInt(id);
+
+      if (isNaN(id) || id < 1 || id > this.pokemons[this.pokemons.length - 1].id) {
+        return;
+      }
+    }
+
     this.id = id;
 
     prominent(this.pokeapiService.getImage(this.id), {
@@ -78,7 +86,7 @@ export class SearchComponent {
       amount: 3,
     })
       .then((colors) => {
-        this.color = colors[1] as string;        
+        this.color = colors[1] as string;
       })
       .catch(() => {
         this.color = "#000000";
@@ -92,5 +100,13 @@ export class SearchComponent {
   randomPokemon(): void {
     const randomIndex = Math.floor(Math.random() * this.pokemons.length);
     this.selectPokemon(this.pokemons[randomIndex].id);
+  }
+
+  getFilterType(): "name" | "id" {
+    if (this.filter.match(/^\d/)) {
+      return "id";
+    } else {
+      return "name";
+    }
   }
 }
