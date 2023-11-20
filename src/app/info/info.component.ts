@@ -13,6 +13,7 @@ export class InfoComponent {
   @ViewChild("img") img: ElementRef<HTMLElement>;
 
   id: number = 1;
+  name: string = "";
 
   isBlur: boolean = false;
 
@@ -157,6 +158,10 @@ export class InfoComponent {
                   name,
                   value: stat.base_stat,
                 });
+              });
+
+              this.pokeapiService.getPokemonName(this.id, "fr").subscribe((name) => {
+                this.name = name;
               });
           });
 
