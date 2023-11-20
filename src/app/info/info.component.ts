@@ -159,7 +159,6 @@ export class InfoComponent {
                   value: stat.base_stat,
                 });
 
-                // Sort stats by pokemon's common stats order
                 this.stats.sort((a, b) => {
                   return pokemon.stats.findIndex((stat: any) => stat.stat.name === a.name) - pokemon.stats.findIndex((stat: any) => stat.stat.name === b.name);
                 });
@@ -179,6 +178,10 @@ export class InfoComponent {
                 this.types.push({
                   name,
                   color: this.getColor("type", name),
+                });
+
+                this.types.sort((a, b) => {
+                  return pokemon.types.findIndex((type: any) => type.type.name === a.name) - pokemon.types.findIndex((type: any) => type.type.name === b.name);
                 });
               });
           });
