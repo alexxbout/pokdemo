@@ -28,6 +28,8 @@ export class SearchComponent {
 
   color: string = "#f0d278";
 
+  mode: string = "info";
+
   constructor(public pokeapiService: PokeapiService) {}
 
   ngOnInit(): void {
