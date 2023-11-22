@@ -20,13 +20,13 @@
    
 
     <div *ngIf="mode == 'info'" class="relative flex items-center justify-between w-full gap-x-10">
-        <img class="absolute z-10 -translate-x-1/2 pointer-events-none drop-shadow-2xl saturate-200 rounded-xl left-1/2" src="{{pokeapiService.getImage(id)}}">
+        <img #pokepic class="absolute z-10 -translate-x-1/2 pointer-events-none drop-shadow-2xl saturate-200 rounded-xl left-1/2" src="{{pokeapiService.getImage(id)}}">
 
         <img (click)="switch('LEFT')" class="transition-transform duration-300 cursor-pointer hover:-translate-x-2"
             src="../../assets/img/chevron_left.svg" alt="">
 
         <span [ngStyle]="{color: color}"
-            class="mb-80 drop-shadow-2xl font-extrabold saturate-200 text-[12vw] whitespace-nowrap text-center max-w-full select-none">
+            class="mb-80 drop-shadow-2xl font-extrabold saturate-[4] text-[12vw] whitespace-nowrap text-center max-w-full select-none">
             {{ name }}
         </span>
 
@@ -68,7 +68,7 @@
         </button>
     </div>
 
-    <div *ngIf="mode == 'list'" class="flex flex-wrap w-full h-full gap-5 py-10 overflow-y-auto">
-        <img *ngFor="let pokemon of pokemons" (click)="selectPokemon(pokemon.id); mode = 'info';" class="w-40 duration-300 aspect-square saturate-150 hover:scale-125" src="{{ pokeapiService.getImage(pokemon.id) }}" alt="">
+    <div *ngIf="mode == 'list'" class="flex flex-wrap items-center justify-center w-full h-full gap-5 py-10 overflow-y-auto">
+        <img loading="lazy" *ngFor="let pokemon of pokemons" (click)="selectPokemon(pokemon.id); mode = 'info';" class="w-20 duration-300 aspect-square saturate-150 hover:scale-125" src="{{ pokeapiService.getImage(pokemon.id) }}" alt="">
     </div>
 </div>

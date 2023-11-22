@@ -1,9 +1,11 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
-  Output
+  Output,
+  ViewChild,
 } from "@angular/core";
-import { prominent } from "color.js";
+import { FastAverageColor } from "fast-average-color";
 import { PokeapiService } from "../pokeapi.service";
 
 @Component({
@@ -11,14 +13,16 @@ import { PokeapiService } from "../pokeapi.service";
   templateUrl: "./search.component.html",
 })
 export class SearchComponent {
-  // ? Différence entre [(ngModel)] et [ngModel] ?
   @Output() viewDetailsEvent: EventEmitter<any> = new EventEmitter();
   @Output() switchEvent: EventEmitter<number> = new EventEmitter<number>();
 
+  @ViewChild("pokepic") pokepic: ElementRef<HTMLImageElement | null>;
+
   pokemons: { id: number; name: string }[] = [];
 
-  id: number = 1;
-  name: string = "";
+  index: number = 24;
+  id: number = 25;
+  name: string = "Pikachu";
 
   switching: boolean = false;
 
@@ -26,29 +30,30 @@ export class SearchComponent {
 
   enableFilter: boolean = false;
 
-  color: string = "#f0d278";
+  color: string = "#d6ba6f";
 
   mode: string = "info";
+
+  fac: FastAverageColor = new FastAverageColor();
 
   constructor(public pokeapiService: PokeapiService) {}
 
   ngOnInit(): void {
     this.pokeapiService.getPokemonList().subscribe((pokemons) => {
-
-      pokemons.forEach((pokemon) => {
-        this.pokeapiService.getPokemonName(pokemon.id, "fr").subscribe((name) => {
-          pokemon.name = name;
-        });
-      });
-
       this.pokemons = pokemons;
 
-      // Preselect Pikachu
-      if (pokemons.length > 0) {
-        const pokemon = pokemons[24];
-        this.selectPokemon(pokemon.id);
-      }
+      this.pokemons.forEach((pokemon) => {
+        this.pokeapiService
+          .getPokemonName(pokemon.id, "fr")
+          .subscribe((name) => {
+            pokemon.name = name;
+          });
+      });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.fac.destroy();
   }
 
   viewDetails(): void {
@@ -62,47 +67,37 @@ export class SearchComponent {
 
     this.switching = true;
 
-    const index = this.pokemons.findIndex((e) => e.id === this.id);
-    const targetIndex = side === "LEFT" ? index - 1 : index + 1;
+    const targetIndex = side === "LEFT" ? this.index - 1 : this.index + 1;
 
-    if (
-      targetIndex >= 0 &&
-      targetIndex < this.pokemons.length
-    ) {
+    if (targetIndex >= 0 && targetIndex < this.pokemons.length) {
       this.selectPokemon(this.pokemons[targetIndex].id);
     }
 
     this.switching = false;
   }
 
-  selectPokemon(id: number|string): void {
+  selectPokemon(id: number | string): void {
     if (typeof id === "string") {
       id = parseInt(id);
 
-      if (isNaN(id) || id < 1 || id > this.pokemons[this.pokemons.length - 1].id) {
+      if (
+        isNaN(id) ||
+        id < 1 ||
+        id > this.pokemons[this.pokemons.length - 1].id
+      ) {
         return;
       }
     }
 
+    this.index = this.pokemons.findIndex((e) => e.id === id);
+
     this.id = id;
 
+    this.updatePokemonName();
+
+    this.updateColor();
+
     this.switchEvent.emit(this.id);
-
-    prominent(this.pokeapiService.getImage(this.id), {
-      format: "hex",
-      group: 30,
-      amount: 3,
-    })
-      .then((colors) => {
-        this.color = colors[1] as string;
-      })
-      .catch(() => {
-        this.color = "#000000";
-      });
-
-    this.pokeapiService.getPokemonName(id, "fr").subscribe((name: string) => {
-      this.name = name;
-    });
   }
 
   randomPokemon(): void {
@@ -116,5 +111,29 @@ export class SearchComponent {
     } else {
       return "name";
     }
+  }
+
+  updatePokemonName(): void {
+    // Utilisation de l'index au lieu de la recherche
+    const pokemon = this.pokemons[this.index];
+
+    if (pokemon) {
+      this.name = pokemon.name;
+    } else {
+      this.name = "Inconnu";
+    }
+  }
+
+  updateColor() {
+    this.fac
+      .getColorAsync(this.pokeapiService.getImage(this.id))
+      .then((color) => {
+        this.color = color.hex;
+      })
+      .catch((e) => {
+        console.error(e);
+
+        this.color = "#000000";
+      });
   }
 }
