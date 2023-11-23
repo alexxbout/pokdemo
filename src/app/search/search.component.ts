@@ -70,13 +70,13 @@ export class SearchComponent {
     const targetIndex = side === "LEFT" ? this.index - 1 : this.index + 1;
 
     if (targetIndex >= 0 && targetIndex < this.pokemons.length) {
-      this.selectPokemon(this.pokemons[targetIndex].id);
+      this.selectPokemon(this.pokemons[targetIndex].id, targetIndex);
     }
 
     this.switching = false;
   }
 
-  selectPokemon(id: number | string): void {
+  selectPokemon(id: number | string, index?: number): void {
     if (typeof id === "string") {
       id = parseInt(id);
 
@@ -89,7 +89,11 @@ export class SearchComponent {
       }
     }
 
-    this.index = this.pokemons.findIndex((e) => e.id === id);
+    if (index !== undefined) {
+      this.index = index;
+    } else {
+      this.index = this.pokemons.findIndex((e) => e.id === id);
+    }
 
     this.id = id;
 
@@ -101,8 +105,7 @@ export class SearchComponent {
   }
 
   randomPokemon(): void {
-    const randomIndex = Math.floor(Math.random() * this.pokemons.length);
-    this.selectPokemon(this.pokemons[randomIndex].id);
+    this.selectPokemon(this.pokemons[Math.floor(Math.random() * this.pokemons.length)].id);
   }
 
   getFilterType(): "name" | "id" {
