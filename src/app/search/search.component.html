@@ -1,19 +1,19 @@
 <div [ngClass]="mode == 'list' ? 'pt-10 px-10' : 'p-10'" class="flex flex-col justify-between w-screen h-screen overflow-hidden">
     <div class="flex items-center justify-between w-full">
         <div class="flex items-center w-max top-10 left-10 gap-x-2">
-            <img class="w-10" src="../../assets/img/pokeball.svg" alt="">
+            <img class="w-10" src="assets/img/pokeball.svg" alt="">
             <span class="text-2xl font-bold text-pokemon-black">Pokémon</span>
         </div>
 
         <div class="grid grid-flow-col p-2 overflow-hidden rounded-full bg-pokemon-black w-max h-max gap-x-2">
             <input type="radio" name="viewMode" id="info" class="hidden appearance-none peer/info" value="info" [(ngModel)]="mode">
             <label for="info" class="px-5 py-2 w-full h-full rounded-full peer-checked/info:bg-white peer-checked/info:text-black text-[#A2A2A2] text-lg">
-                <img class="w-5" src="../../assets/img/poke.svg" alt="">
+                <img class="w-5" src="assets/img/poke.svg" alt="">
             </label>
 
             <input type="radio" name="viewMode" id="list" class="hidden appearance-none peer/list" value="list" [(ngModel)]="mode">
             <label for="list" class="px-5 py-2 w-full h-full rounded-full peer-checked/list:bg-white peer-checked/list:text-black text-[#A2A2A2] text-lg">
-                <img class="w-5" src="../../assets/img/pokes.svg" alt="">
+                <img class="w-5" src="assets/img/pokes.svg" alt="">
             </label>
         </div>
     </div>
@@ -23,7 +23,7 @@
         <img #pokepic class="absolute z-10 -translate-x-1/2 pointer-events-none drop-shadow-2xl saturate-200 rounded-xl left-1/2" src="{{pokeapiService.getImage(id)}}">
 
         <img (click)="switch('LEFT')" class="transition-transform duration-300 cursor-pointer hover:-translate-x-2"
-            src="../../assets/img/chevron_left.svg" alt="">
+            src="assets/img/chevron_left.svg" alt="">
 
         <span [ngStyle]="{color: color}"
             class="mb-80 drop-shadow-2xl font-extrabold saturate-[4] text-[12vw] whitespace-nowrap text-center max-w-full select-none">
@@ -32,14 +32,14 @@
 
         <img (click)="switch('RIGHT')"
             class="transition-transform duration-300 rotate-180 cursor-pointer hover:translate-x-2"
-            src="../../assets/img/chevron_left.svg" alt="">
+            src="assets/img/chevron_left.svg" alt="">
     </div>
 
     <div *ngIf="mode == 'info'" class="flex items-center justify-center w-full gap-x-5">
         <button (click)="randomPokemon()"
             class="p-4 font-bold text-white duration-300 rounded-full bg-pokemon-black h-max group hover:scale-105">
             <img class="w-6 h-6 transition-transform duration-500 group-hover:rotate-180"
-                src="../../assets/img/random.svg" alt="">
+                src="assets/img/random.svg" alt="">
         </button>
 
         <div class="flex items-center justify-center px-4 py-4 rounded-full bg-pokemon-black h-max w-max gap-x-5">
