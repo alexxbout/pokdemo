@@ -68,7 +68,7 @@
         </button>
     </div>
 
-    <div *ngIf="mode == 'list'" class="flex flex-wrap items-center justify-center w-full h-full gap-5 py-10 overflow-y-auto">
+    <div [ngClass]="mode == 'list' ? 'flex' : 'hidden'" class="flex-wrap items-center justify-center w-full h-full gap-5 py-10 overflow-y-auto">
         <img loading="lazy" *ngFor="let pokemon of pokemons" (click)="selectPokemon(pokemon.id); mode = 'info';" class="w-20 duration-300 aspect-square saturate-150 hover:scale-125" src="{{ pokeapiService.getImage(pokemon.id) }}" alt="">
     </div>
 </div>
