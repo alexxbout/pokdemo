@@ -173,6 +173,10 @@ export class InfoComponent {
         this.pokeapiService
           .getStatName(stat.stat.url, "fr")
           .subscribe((name) => {
+            if (this.stats.length > 7) {
+              this.stats = [];
+            }
+
             this.stats.push({
               name,
               value: stat.base_stat,

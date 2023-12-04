@@ -47,6 +47,10 @@ export class SearchComponent {
           .getPokemonName(pokemon.id, "fr")
           .subscribe((name) => {
             pokemon.name = name;
+
+            if (pokemon.id === this.id) {
+              this.selectPokemon(this.id);
+            }
           });
       });
     });
