@@ -3,6 +3,19 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Run ng serve",
+      "type": "shell",
+      "command": "ng serve",
+      "windows": {
+        "command": "ng serve"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "runOptions": { "runOn": "folderOpen" }
+    },
+    {
       "type": "npm",
       "script": "start",
       "isBackground": true,

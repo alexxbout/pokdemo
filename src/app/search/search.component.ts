@@ -4,74 +4,143 @@ import {
   EventEmitter,
   Output,
   ViewChild,
-} from '@angular/core';
-import { prominent } from 'color.js';
-import { PokeapiService } from '../pokeapi.service';
+} from "@angular/core";
+import { FastAverageColor } from "fast-average-color";
+import { PokeapiService } from "../pokeapi.service";
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  selector: "app-search",
+  templateUrl: "./search.component.html",
 })
 export class SearchComponent {
-  // ? Différence entre [(ngModel)] et [ngModel] ?
+  @Output() viewDetailsEvent: EventEmitter<any> = new EventEmitter();
+  @Output() switchEvent: EventEmitter<number> = new EventEmitter<number>();
 
-  @Output() selectedPokemonId: EventEmitter<number> =
-    new EventEmitter<number>();
-  @Output() viewDetailsClicked: EventEmitter<number> =
-    new EventEmitter<number>();
-
-  @ViewChild('pokepic') pokepic: ElementRef<HTMLImageElement>;
+  @ViewChild("pokepic") pokepic: ElementRef<HTMLImageElement | null>;
 
   pokemons: { id: number; name: string }[] = [];
 
-  // id du pokémon sélectionné
-  selected: number = -1;
-  filter: string = '';
+  index: number = 24;
+  id: number = 25;
+  name: string = "Pikachu";
 
-  color: string = '';
+  switching: boolean = false;
 
-  loaded: boolean = false;
+  filter: string = "";
+
+  enableFilter: boolean = false;
+
+  color: string = "#d6ba6f";
+
+  mode: string = "info";
+
+  fac: FastAverageColor = new FastAverageColor();
 
   constructor(public pokeapiService: PokeapiService) {}
 
-  // Méthode appelée au chargement de la page une fois que le composant est initialisé
   ngOnInit(): void {
     this.pokeapiService.getPokemonList().subscribe((pokemons) => {
       this.pokemons = pokemons;
+
+      this.pokemons.forEach((pokemon) => {
+        this.pokeapiService
+          .getPokemonName(pokemon.id, "fr")
+          .subscribe((name) => {
+            pokemon.name = name;
+
+            if (pokemon.id === this.id) {
+              this.selectPokemon(this.id);
+            }
+          });
+      });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.fac.destroy();
   }
 
   viewDetails(): void {
-    // Emit the event when "Voir les détails" button is clicked
-    this.viewDetailsClicked.emit(this.selected);
+    this.viewDetailsEvent.emit();
   }
 
-  // Méthode pour obtenir l"index du pokémon sélectionné dans le tableau des pokémons
-  getSelectedPokemonIndex(): number {
-    return this.pokemons.findIndex((e) => {
-      return e.id == this.selected;
-    });
+  switch(side: "LEFT" | "RIGHT") {
+    if (this.switching) {
+      return;
+    }
+
+    this.switching = true;
+
+    const targetIndex = side === "LEFT" ? this.index - 1 : this.index + 1;
+
+    if (targetIndex >= 0 && targetIndex < this.pokemons.length) {
+      this.selectPokemon(this.pokemons[targetIndex].id, targetIndex);
+    }
+
+    this.switching = false;
+  }
+
+  selectPokemon(id: number | string, index?: number): void {
+    if (typeof id === "string") {
+      id = parseInt(id);
+
+      if (
+        isNaN(id) ||
+        id < 1 ||
+        id > this.pokemons[this.pokemons.length - 1].id
+      ) {
+        return;
+      }
+    }
+
+    if (index !== undefined) {
+      this.index = index;
+    } else {
+      this.index = this.pokemons.findIndex((e) => e.id === id);
+    }
+
+    this.id = id;
+
+    this.updatePokemonName();
+
+    this.updateColor();
+
+    this.switchEvent.emit(this.id);
   }
 
   randomPokemon(): void {
-    this.loaded = false;
+    this.selectPokemon(this.pokemons[Math.floor(Math.random() * this.pokemons.length)].id);
+  }
 
-    const randomIndex = Math.floor(Math.random() * this.pokemons.length);
-    this.selected = this.pokemons[randomIndex].id;
+  getFilterType(): "name" | "id" {
+    if (this.filter.match(/^\d/)) {
+      return "id";
+    } else {
+      return "name";
+    }
+  }
 
-    setTimeout(() => {
-      if (this.pokepic) {
-        prominent(this.pokepic.nativeElement, {
-          format: 'hex',
-          group: 5,
-          amount: 2
-        }).then((color) => {
-          this.color = color[1] as string;
+  updatePokemonName(): void {
+    // Utilisation de l'index au lieu de la recherche
+    const pokemon = this.pokemons[this.index];
 
-          this.loaded = true;
-        }).catch((err) => {});
-      }
-    });
+    if (pokemon) {
+      this.name = pokemon.name;
+    } else {
+      this.name = "Inconnu";
+    }
+  }
+
+  updateColor() {
+    this.fac
+      .getColorAsync(this.pokeapiService.getImage(this.id))
+      .then((color) => {
+        this.color = color.hex;
+      })
+      .catch((e) => {
+        console.error(e);
+
+        this.color = "#000000";
+      });
   }
 }

@@ -1,22 +1,22 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
+import { InfoComponent } from "./info/info.component";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  title = "pokdemo";
-  selectedPokemonId: number = -1;
+  @ViewChild(InfoComponent) infoComponent: InfoComponent | undefined;
 
-  onPokemonSelected(id: number): void {
-    this.selectedPokemonId = id;
+  updateDetails(id: number) {
+    if (this.infoComponent) {
+      this.infoComponent.update(id);
+    }
   }
 
-  toggleInfoWithBlur(): void {
-    if (this.selectedPokemonId !== -1) {
-      // this.toggleBlur(); // Toggle the blur
-      // Additional logic to toggle the InfoComponent if needed
+  openDetails() {
+    if (this.infoComponent) {
+      this.infoComponent.toggle();
     }
   }
 }

@@ -1,11 +1,9 @@
-<div>
-  <app-info [pokemonId]="selectedPokemonId"></app-info>
+<div class="hidden w-screen h-screen bg-white md:flex">
+    <app-info></app-info>
 
-  <div class="flex flex-col items-center gap-y-10">
-    <img src="assets/img/pokedex.png" alt="Pokedex" />
+    <app-search (switchEvent)="updateDetails($event)" (viewDetailsEvent)="openDetails()"></app-search>
+</div>
 
-    <div class="flex flex-col items-center justify-center gap-y-10">
-      <app-search (selectedPokemonId)="onPokemonSelected($event)"></app-search>
-    </div>
-  </div>
+<div class="flex items-center justify-center w-screen h-screen text-xl font-semibold bg-white md:hidden">
+    <span>Revenez nous voir sur ordinateur ;)</span>
 </div>
